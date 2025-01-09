@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tilsluttet!</title>
+    <style>
+        * {
+            --text: #ecf1f5;
+            --background: #09131b;
+            --primary: #90b9dd;
+            --secondary: #125d9f;
+            --accent: #3e29a4;
+
+            --font: Arial, Helvetica, sans-serif;
+            --border-radius: 7px;
+
+            margin: 0;
+            padding: 0;
+            border: 0 solid transparent;
+        }
+        body {
+
+            min-height: 100vh;
+            line-height: 1;
+            /*text-rendering: optimizeSpeed;*/
+
+            background-color: var(--background);
+            font-family: var(--font);
+            color: var(--text);
+            
+            display: flex;
+            justify-content: center;
+        }
+
+        h1 {
+            font-weight: bold;
+            font-size: min(15vw, 36px);
+            
+        }
+
+        p {
+            font-size: 7vw;
+        }
+        
+        button {
+            border-radius: var(--border-radius);
+        }
+
+        input {
+            border-radius: var(--border-radius);
+            margin: 0.5vh;
+        }
+
+        input:focus {
+            transition: 0.2s;
+            outline: 3px solid var(--secondary);
+        }
+
+        #main {
+            margin-top: 5vh;
+            width: 90vw;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        #submit {
+            color: var(--background);
+            background-color: var(--primary);
+            
+            cursor: pointer;
+            
+        }
+
+        .textfield {
+            min-height: 32px;
+            height: 32px;
+            padding-left: 3px;
+            padding-right: 3px;
+            outline: 0px solid var(--secondary);
+            transition: 0.2s;
+        }
+
+        
+        /* mobile */
+        @media (max-aspect-ratio: 5/4) {
+            .textfield {
+                height: 50px;
+                width: 85vw;
+                font-size: 22px;
+                padding: 0;
+                text-indent: 2vw;
+            }
+
+            #submit {
+                width: 85vw;
+                font-size: 18px;
+                height: 50px; 
+                padding: 0;
+            }
+        }
+        /* pc */
+        @media (min-aspect-ratio: 5/4) {
+            h1 {
+                font-size: 6vw;
+            }
+
+            p {
+                font-size: 2vw;
+            }
+
+            .textfield {
+                width: 18vw;
+                height: 4.5vw;
+                font-size: 2vw;
+            }
+
+            #submit {
+                width: 15vw;
+                height: 5vw;
+                font-size: 2vw;
+            }
+        }
+        
+    </style>
+</head> 
+<body>
+    <div id="main">
+        <h1>Tilsluttet til netværket!</h1>
+
+        <p>Nu skal du downloade klient programmet <a href="https://github.com/penewold/crazy/releases/download/test/crazyhello.exe" download="dørklokke-setup">her</a></p>
+        
+    </div>
+</body>
+</html>
