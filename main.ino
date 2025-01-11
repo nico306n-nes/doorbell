@@ -714,9 +714,16 @@ void setStage2() {
   WiFi.disconnect();
   delay(1000);
   if (WiFi.config(staticIP, gateway, subnet, dns)) {
-    Serial.println("[stage2][static ip config] Static IP configured successfully");
+    Serial.println("[stage2][static ip config attempt 1]] Static IP configured successfully");
   } else {
-    Serial.println("[stage2][static ip config] Failed to configure static IP");
+    Serial.println("[stage2][static ip config attempt 1] Failed to configure static IP");
+    staticIP[2] = 0;
+    if (WiFi.config(staticIP, gateway, subnet, dns)) {
+      Serial.println("[stage2][static ip config attempt 2] Static IP configured successfully");
+    } else {
+      Serial.println("[stage2][static ip config attempt 2] Failed to configure static IP");
+    
+    }
   }
   
   WiFi.begin(ssid, pass);
