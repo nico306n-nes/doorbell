@@ -1,9 +1,35 @@
 import tkinter as tk
 from tkinter import Label
 from PIL import Image, ImageTk
-import screeninfo  # Optional for multi-monitor environments
+import screeninfo  # Optional for multi-monitor environments'
 
-def create_custom_window(image_path, text="Klokke ringet", window_width=400, window_height=200, window_timeout=10):
+class Text:
+    custom_text = "None"
+    size = 18
+    background_color = "#fff"
+    foreground_color = "#000"
+    margin_x = 10
+    margin_y = 10
+    def __init__(self, custom_text, color="#000", background_color="#fff", margin_x=10, margin_y=10):
+        self.custom_text = custom_text
+        self.foreground_color = color
+        self.background_color = background_color
+        self.margin_x = margin_x
+        self.margin_y = margin_y
+    
+class Box:
+    width = 400
+    height = 200
+    timeout = 10
+    background = "background.png"
+    def __init__(self, width, height, timeout, background):
+        self.width = width
+        self.height = height
+        self.timeout = timeout
+        self.background = background
+        
+
+def create_window(text=Text("No Text set :("), box=Box(400, 200, 10, "background.png")):
     # Create the main window
     root = tk.Tk()
     
@@ -18,15 +44,15 @@ def create_custom_window(image_path, text="Klokke ringet", window_width=400, win
     screen_height = root.winfo_screenheight()
     
     # Calculate position for the lower right corner
-    x_position = screen_width - window_width - 0  # 10 px margin from the right
-    y_position = screen_height - window_height - 0  # 50 px margin from the bottom
+    x_position = screen_width - box.width - 0  # 10 px margin from the right
+    y_position = screen_height - box.height - 0  # 50 px margin from the bottom
 
     # Set window size and position
-    root.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
+    root.geometry(f"{box.width}x{box.height}+{x_position}+{y_position}")
     
     # Load and resize the image to fit the window
-    image = Image.open(image_path)
-    image = image.resize((window_width, window_height), Image.LANCZOS)
+    image = Image.open(box.background)
+    image = image.resize((box.width, box.height), Image.LANCZOS)
     photo = ImageTk.PhotoImage(image)
     
     # Create label for image background
@@ -34,21 +60,19 @@ def create_custom_window(image_path, text="Klokke ringet", window_width=400, win
     image_label.place(x=0, y=0, relwidth=1, relheight=1)
     
     # Add custom text on top of the image
-    text_label = Label(root, text=text, fg="white", bg="black", font=("Arial", 18))
-    text_label.place(anchor="nw", x=10, y=10)
+    text_label = Label(root, text=text.custom_text, fg=text.foreground_color, bg=text.background_color, font=("Arial", text.size))
+    text_label.place(anchor="nw", x=text.margin_x, y=text.margin_y)
     
     # Allow window to be closed with the Escape key
-    root.after(window_timeout * 1000, lambda: root.destroy())
+    root.after(box.timeout * 1000, lambda: root.destroy())
     
     # Run the main loop
     root.mainloop()
 
+
 # Example usage
 if __name__ == "__main__":
-    image_path = "background.png"  # Path to your image file
+    image_path = "background2.png"  # Path to your image file
     custom_text = "Klokke ringet"
-    width = 400
-    height = 200
-    timeout = 10
-    create_custom_window(image_path, custom_text, width, height, timeout)
+    create_window(Text(custom_text), Box(400, 200, 10, image_path))
 
