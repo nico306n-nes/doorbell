@@ -9,4 +9,3 @@ jingle = sound.Sound("jingle.mp3")
 # IMPORTANT: play the jingle before opening the window
 jingle.play()
 window.create_window(text, box)
-
