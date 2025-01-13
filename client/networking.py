@@ -25,11 +25,11 @@ class Site:
     def get_reason(self):
         return self.reason
     
-    def get_site(self):
-        return requests.get(self.site)
+    def get_site(self, sub):
+        return requests.get(self.site + sub)
     
     def get_diff(self):
-        return json.loads(self.get_site().text)["diff"]
+        return json.loads(self.get_site("/klokke").text)["diff"]
     
     def get_status(self):
         return self.get_site().status_code
