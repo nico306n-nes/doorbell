@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import Label
 from PIL import Image, ImageTk
 import screeninfo  # Optional for multi-monitor environments'
+import sound
 
 class Text:
     custom_text = "None"
@@ -28,8 +29,7 @@ class Box:
         self.timeout = timeout
         self.background = background
         
-
-def create_window(text=Text("No Text set :("), box=Box(400, 200, 10, "background.png")):
+def create_window(text=Text("No Text set :("), box=Box(400, 200, 10, "background.png"), sound=sound.Sound("jingle.mp3", 0)):
     # Create the main window
     root = tk.Tk()
     
@@ -63,7 +63,8 @@ def create_window(text=Text("No Text set :("), box=Box(400, 200, 10, "background
     text_label = Label(root, text=text.custom_text, fg=text.foreground_color, bg=text.background_color, font=("Arial", text.size))
     text_label.place(anchor="nw", x=text.margin_x, y=text.margin_y)
     
-    # Allow window to be closed with the Escape key
+    
+    root.after((box.timeout * 1000) - sound.fade_out, lambda: sound.fade_stop())
     root.after(box.timeout * 1000, lambda: root.destroy())
     
     # Run the main loop
