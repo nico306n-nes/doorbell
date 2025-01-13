@@ -1,5 +1,6 @@
 import requests
 import json
+import sys
 
 class Site:
     site = "http://klokke.local"
@@ -26,7 +27,11 @@ class Site:
         return self.reason
     
     def get_site(self, sub):
-        return requests.get(self.site + sub)
+        try:
+            return requests.get(self.site + sub)
+        except:
+            sys.exit()
+        
     
     def get_diff(self):
         return json.loads(self.get_site("/klokke").text)["diff"]

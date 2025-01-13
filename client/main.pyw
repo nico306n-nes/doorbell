@@ -2,6 +2,7 @@ import window
 import sound
 import networking
 import time
+import sys
 
 timeout = 10
 
@@ -34,7 +35,7 @@ klokke = attempt_connection(ips, debug=True)
 
 if (klokke == False):
     print("couldnt reach any ip. Exiting")
-    quit()
+    sys.exit()
 
 
 # main loop
