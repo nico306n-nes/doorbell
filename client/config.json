@@ -1,0 +1,23 @@
+{
+    "connection" : {
+        "ips": ["klokke.local", "192.168.50.200", "192.168.0.200", "10.0.50.200", "10.0.0.200", "127.0.0.1:8080"]
+    },
+
+    "window": {
+        "text": {
+            "text": "Der er nogen ved klokken :)",
+            "size": 18,
+            "color": "#000",
+            "background": "#fff",
+            "margin": [10, 10]
+        },
+        "box": {
+            "width": 400,
+            "height": 200,
+            "timeout": 10,
+            "background": "background2.png"
+        }
+    }
+    
+
+}

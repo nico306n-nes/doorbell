@@ -11,8 +11,9 @@ class Text:
     foreground_color = "#000"
     margin_x = 10
     margin_y = 10
-    def __init__(self, custom_text, color="#000", background_color="#fff", margin_x=10, margin_y=10):
+    def __init__(self, custom_text: str, size: int = 18, color: str = "#000", background_color: str = "#fff", margin_x: int = 10, margin_y: int = 10):
         self.custom_text = custom_text
+        self.size = size
         self.foreground_color = color
         self.background_color = background_color
         self.margin_x = margin_x
@@ -23,7 +24,7 @@ class Box:
     height = 200
     timeout = 10
     background = "background.png"
-    def __init__(self, width, height, timeout, background):
+    def __init__(self, width: int, height: int, timeout: float|int, background: str):
         self.width = width
         self.height = height
         self.timeout = timeout
