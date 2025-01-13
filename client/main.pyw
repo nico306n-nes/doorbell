@@ -17,25 +17,11 @@ box = window.Box(width=config_box["width"], height=config_box["height"], timeout
 jingle = sound.Sound("jingle.mp3", fade_out=1000)
 
 
-def attempt_connection(ips, debug=True):
-    for ip in ips:
-        klokke_ip = ip
-        klokke = networking.Site(klokke_ip)
-        if klokke.check_connection() == True:
-            if debug == True:
-                print("Reached site at " + klokke_ip + "!")
-            
-            return klokke
-        else:
-            if debug == True:
-                print("Could not reach " + klokke_ip)
-                print("Caused by: " + str(klokke.get_reason()))
 
-    return False
 
 
 print("attempting connection")
-klokke = attempt_connection(config["connection"]["ips"], debug=True)
+klokke = networking.attempt_connection(config["connection"]["ips"], debug=False)
 
 if (klokke == False):
     print("couldnt reach any ip. Exiting")
