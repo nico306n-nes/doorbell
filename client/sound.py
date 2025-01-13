@@ -12,7 +12,7 @@ class Sound:
 
     sound_sound = pygame.mixer.Sound(sound)
 
-    def __init__(self, sound, fade_out):
+    def __init__(self, sound: str, fade_out: int):
         self.sound_sound = pygame.mixer.Sound(sound)
         self.fade_out = fade_out
 
@@ -25,8 +25,6 @@ class Sound:
     def fade_stop(self):
         self.sound_sound.fadeout(self.fade_out)
     
-
-
 
 
 if __name__ == "__main__":

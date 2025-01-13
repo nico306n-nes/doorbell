@@ -17,7 +17,14 @@
             "timeout": 10,
             "background": "background2.png"
         }
-    }
+    },
     
+    "sound": {
+        "sound_file": "jingle.mp3",
+        "loops": -1,
+        "max_time": 0,
+        "fade_in": 1000,
+        "fade_out": 1000
+    }
 
 }
