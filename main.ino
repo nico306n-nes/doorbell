@@ -590,6 +590,9 @@ unsigned long prevTime;
 
 unsigned long lastClickedTime = 0;
 int stage = 1;
+const int broadcastPort = 30499;
+
+WiFiUDP udp;
 
 void initStage1Server();
 void initMDNS(String hostName);
@@ -601,6 +604,7 @@ void handleConnectPOST();
 void handleConnectGET();
 void handleStage2Root();
 void handleStage2Klokke();
+void handleStage2Emulate();
 String constructJson(unsigned long currentTime, unsigned long previousTime);
 
 ESP8266WebServer server(80);
@@ -626,17 +630,20 @@ void loop() {
   if (stage == 1) {
     server.handleClient();
     MDNS.update();
-      
     
-
     if (ssid != "" && pass != "") {
       checkTimeElapsed();
     }
-
   } else if (stage == 2) {
+    String message = WiFi.localIP().toString();
+    udp.beginPacket(IPAddress(255, 255, 255, 255), broadcastPort);  // Broadcasting to all devices
+    udp.write("unique ");
+    udp.write(message.c_str());
+    udp.endPacket();  
     stage2Server.handleClient();
-    MDNS.update();
+    //MDNS.update();
   }
+  delay(200);
 }
 
 void initStage1Server() {
@@ -704,45 +711,22 @@ void setStage2() {
     delay(500);
   }
 
-  IPAddress staticIP = WiFi.localIP();          // Use current IP
-  staticIP[2] = 50;                             // Adjust next to last octet to a known ip
-  staticIP[3] = 200;                            // Adjust last octet for uniqueness
-  IPAddress gateway = WiFi.gatewayIP();         // Use the current gateway
-  IPAddress subnet = WiFi.subnetMask();         // Use the current subnet mask
-  IPAddress dns = WiFi.gatewayIP();             // Use gateway as DNS, or set a custom one like 8.8.8.8
-
-  WiFi.disconnect();
-  delay(1000);
-  if (WiFi.config(staticIP, gateway, subnet, dns)) {
-    Serial.println("[stage2][static ip config attempt 1]] Static IP configured successfully");
-  } else {
-    Serial.println("[stage2][static ip config attempt 1] Failed to configure static IP");
-    staticIP[2] = 0;
-    if (WiFi.config(staticIP, gateway, subnet, dns)) {
-      Serial.println("[stage2][static ip config attempt 2] Static IP configured successfully");
-    } else {
-      Serial.println("[stage2][static ip config attempt 2] Failed to configure static IP");
-    
-    }
-  }
-  
-  WiFi.begin(ssid, pass);
-
-  while (WiFi.status() != WL_CONNECTED) {
-    Serial.println("[stage2][connecting] code: " + checkReturnCode(WiFi.status()));
-    delay(500);
-  }
-
   Serial.println("[stage2][wifi] connected to: " + WiFi.SSID());
   Serial.println("[stage2][wifi] connected with ip: " + WiFi.localIP().toString());
   
 
   initMDNS("klokke");
 
+  Serial.print("[stage2][wifi] broadcasting ip on: ");
+  Serial.println(broadcastPort);
+  udp.begin(broadcastPort);
+
   stage2Server.on("/", handleStage2Root);
   Serial.println("[stage2][webserver] handleStage2Root set up on /");
   stage2Server.on("/klokke", handleStage2Klokke);
   Serial.println("[stage2][webserver] handleStage2Klokke set up on /klokke");
+  stage2Server.on("/emulate", handleStage2Emulate);
+  Serial.println("[stage2][webserver] handleStage2Emulate set up on /emulate");
   stage2Server.begin();
 }
 
@@ -806,6 +790,11 @@ void handleStage2Klokke() {
   Serial.println("[stage2][webserver] Received request on /klokke");
   String data = constructJson(millis(), lastClickedTime);
   stage2Server.send(200, "application/json", data);
+}
+
+void handleStage2Emulate() {
+  lastClickedTime = millis();
+  stage2Server.send(200, "text/html", "<p>Emulating button</p>");
 }
 
 String constructJson(unsigned long currentTime, unsigned long previousTime) {

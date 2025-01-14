@@ -14,15 +14,24 @@ text = window.Text(custom_text=config_text["text"], size=config_text["size"], co
 box = window.Box(width=config_box["width"], height=config_box["height"], timeout=config_box["timeout"], background=config_box["background"])
 jingle = sound.Sound(sound="jingle.mp3", fade_out=config_sound["fade_out"])
 
+info_text = window.Text("")
+info_box = window.Box(400, 200, 20, "background2.png")
+
 
 print("attempting connection")
-klokke = networking.attempt_connection(config["connection"]["ips"], debug=False)
+klokke_ip = networking.attempt_connection(config["connection"]["ips"], debug=True)
+
+klokke = networking.Site(klokke_ip)
 
 if (klokke == False):
     print("couldnt reach any ip. Exiting")
     sys.exit()
 
 print("connection succesful")
+print(klokke.site)
+
+info_text.custom_text = f"Klokkens ip er blevet fundet\n{klokke_ip}"
+window.create_window(info_text, info_box)
 
 # main loop
 while True:

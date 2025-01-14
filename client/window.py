@@ -66,7 +66,9 @@ def create_window(text=Text("No Text set :("), box=Box(400, 200, 10, "background
     
     
     root.after((box.timeout * 1000) - sound.fade_out, lambda: sound.fade_stop())
+    
     root.after(box.timeout * 1000, lambda: root.destroy())
+    
     
     # Run the main loop
     root.mainloop()
