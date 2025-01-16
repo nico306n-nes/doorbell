@@ -6,8 +6,8 @@
 #include <ArduinoJson.h>
 
 
-#define LEDON 0x0
-#define LEDOFF 0x1
+#define BUTTONDOWN 0x0
+#define BUTTONUP 0x1
 
 const char index_html[] PROGMEM = R"rawliteral(
 <!DOCTYPE html>
@@ -587,10 +587,11 @@ String ssid;
 String pass;
 bool debounce = false;
 unsigned long prevTime;
-
 unsigned long lastClickedTime = 0;
 int stage = 1;
 const int broadcastPort = 30499;
+const int buttonPin = 13;
+int buttonState = 0;
 
 WiFiUDP udp;
 
@@ -614,6 +615,8 @@ ESP8266WebServer stage2Server(80);
 void setup() {
   //pinMode(LED_BUILTIN, OUTPUT); // Initialize the LED_BUILTIN pin as an output
   Serial.begin(115200);
+
+  pinMode(buttonPin, INPUT_PULLUP);
 
   Serial.println("\n\n[stage1][WifiAP] configuring ap");
   WiFi.softAP(ApSsid);
@@ -641,9 +644,16 @@ void loop() {
     udp.write(message.c_str());
     udp.endPacket();  
     stage2Server.handleClient();
+
+    buttonState = digitalRead(buttonPin);
+    if (buttonState == BUTTONDOWN) {
+      lastClickedTime = millis();
+    }
+    Serial.println(buttonState);
     //MDNS.update();
   }
-  delay(200);
+  delay(100);
+  
 }
 
 void initStage1Server() {
@@ -714,12 +724,13 @@ void setStage2() {
   Serial.println("[stage2][wifi] connected to: " + WiFi.SSID());
   Serial.println("[stage2][wifi] connected with ip: " + WiFi.localIP().toString());
   
-
   initMDNS("klokke");
 
   Serial.print("[stage2][wifi] broadcasting ip on: ");
   Serial.println(broadcastPort);
   udp.begin(broadcastPort);
+
+  pinMode(buttonPin, INPUT_PULLUP);
 
   stage2Server.on("/", handleStage2Root);
   Serial.println("[stage2][webserver] handleStage2Root set up on /");

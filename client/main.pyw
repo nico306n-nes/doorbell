@@ -14,8 +14,8 @@ text = window.Text(custom_text=config_text["text"], size=config_text["size"], co
 box = window.Box(width=config_box["width"], height=config_box["height"], timeout=config_box["timeout"], background=config_box["background"])
 jingle = sound.Sound(sound="jingle.mp3", fade_out=config_sound["fade_out"])
 
-info_text = window.Text("")
-info_box = window.Box(400, 200, 20, "background2.png")
+info_text = window.Text("Klokken er registreret")
+info_box = window.Box(400, 200, 15, "background2.png")
 
 
 print("attempting connection")
@@ -30,7 +30,7 @@ if (klokke == False):
 print("connection succesful")
 print(klokke.site)
 
-info_text.custom_text = f"Klokkens ip er blevet fundet\n{klokke_ip}"
+#info_text.custom_text = f"Klokkens ip er blevet fundet\n{klokke_ip}"
 window.create_window(info_text, info_box)
 
 # main loop
